@@ -1,7 +1,5 @@
 //class definitions for user commands to the bot
 
-const Discord = require('discord.js');
-
 class Command {
 	constructor(command,description,operation) {
 		this.command = command;
@@ -41,7 +39,7 @@ class Trigger extends SayCommand {
 	}
 }
 
-//Command that does not automatically print (useful for e.g. quit command)
+//Command that does not automatically print reply (useful for e.g. quit command)
 class SilentCommand extends Command {
 	check(message) {
 		if (message.content.indexOf('!'+this.command) === 0) {

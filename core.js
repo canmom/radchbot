@@ -2,6 +2,9 @@
 const Discord = require('discord.js');
 const Command = require('./command.js');
 
+//Hide the token in a separate file, make sure it exposes 'token'!
+const Token = require('./token.js');
+
 //which submodules to load
 var modules = ['utility','dice','songs'];
 
@@ -13,8 +16,7 @@ modules = modules.map(function(moduleName) {
 // create an instance of a Discord Client, and call it bot
 const bot = new Discord.Client();
 
-// the token of your bot
-const token = 'MjIwNzcyMTE0NzE2Njg4Mzg0.CqlKCg.OQVdLHHSMhTGmEFAE4qk91jRMcY';
+
 
 commands = [];
 
@@ -63,4 +65,4 @@ bot.on('message', function(message) {
 });
 
 // log our bot in
-bot.login(token);
+bot.login(Token.token);

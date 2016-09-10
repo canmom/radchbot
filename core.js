@@ -13,6 +13,7 @@ const token = 'MjIwNzcyMTE0NzE2Njg4Mzg0.CqlKCg.OQVdLHHSMhTGmEFAE4qk91jRMcY';
 
 commands = [];
 
+//The two absolutely vital commands
 commands.push(new Command.Command(
 	'help',
 	'List known commands.',
@@ -24,6 +25,17 @@ commands.push(new Command.Command(
 		return commandList;
 	}));
 
+commands.push(new Command.SilentCommand(
+	'quit',
+	'Make the bot log out on all servers.',
+	function(a,message) {
+		message.channel.sendMessage("OK, goodbye everyone! <3");
+		console.log("Quitting by request of " + message.author.username);
+		bot.destroy();
+	})
+)
+
+//Load commands from modules
 function loadCommands(module) {
 	Array.prototype.push.apply(commands(module.commands))
 }

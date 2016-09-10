@@ -13,16 +13,6 @@ commands.push(new Command.Command(
 	})
 )
 
-commands.push(new Command.SilentCommand(
-	'quit',
-	'Make the bot log out on all servers.',
-	function(a,message) {
-		message.channel.sendMessage("OK, goodbye everyone! <3");
-		console.log("Quitting by request of " + message.author.username);
-		bot.destroy();
-	})
-)
-
 module.exports = {
 	commands: commands
 };

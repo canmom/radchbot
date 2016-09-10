@@ -91,7 +91,7 @@ function processFullExpression(diceExpression) {
 
 }
 
-var respond = function(message) {
+var respond = function(diceExpression,message) {
 	console.log("rolling " + diceExpression + " for " + message.author.username);
     
     var rolls = processFullExpression(diceExpression)
@@ -117,10 +117,10 @@ var respond = function(message) {
 var dicehelp = function() {
 	return "A dice expression is a series of groups with + or - between them, e.g. 1d8+2d6-4 or 4d6b3.\n"+
 		"Each group can be in the format X, XdY, XdYbZ or XdYwZ.\n"+
-		"\tX:     A whole number.\n"+
-		"\tXdY:   roll a Y-sided die X times and sum the results.\n"+
-		"\tXdYbZ: roll a Y-sided die X times and sum the highest Z results. If Z>X, sum all results.\n"+
-		"\tXdYwZ: roll a Y-sided die X times and sum the lowest Z results. If Z>X, sum all results.";
+		"\tX:\tA whole number.\n"+
+		"\tXdY:\troll a Y-sided die X times and sum the results.\n"+
+		"\tXdYbZ:\troll a Y-sided die X times and sum the highest Z results. If Z>X, sum all results.\n"+
+		"\tXdYwZ:\troll a Y-sided die X times and sum the lowest Z results. If Z>X, sum all results.";
 }
 
 module.exports = {

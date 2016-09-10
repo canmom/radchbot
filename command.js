@@ -20,7 +20,7 @@ class Command {
 		}
 	}
 
-	get help {
+	get help() {
 		return "\t"+this.command+":"+"\t"+this.description+"\n";
 	}
 }

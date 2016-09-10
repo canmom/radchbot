@@ -1,4 +1,4 @@
-Command = require('./command');
+Command = require('../command');
 
 //basic functions for interacting with Discord
 
@@ -14,5 +14,6 @@ commands.push(new Command.Command(
 )
 
 module.exports = {
+	name: "Utility",
 	commands: commands
 };

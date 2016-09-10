@@ -1,6 +1,6 @@
 //output Imperial Radch songs
 
-const Command = require('./command');
+const Command = require('../command');
 
 class Song extends Command.SayCommand {
 	constructor(command,title,verse,data) {
@@ -213,5 +213,6 @@ commands.push(new Command.Command('songs','List song commands.',
 	}));
 
 module.exports = {
+	name: "Songs",
 	commands: commands
 }

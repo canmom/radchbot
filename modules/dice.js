@@ -1,4 +1,4 @@
-const Command = require('./command');
+const Command = require('../command');
 
 //roll a single die
 function rollDie(size) {
@@ -124,6 +124,7 @@ var dicehelp = function() {
 }
 
 module.exports = {
+	name: "Dice",
 	commands: [
 		new Command.Command("roll",
 			"Roll a series of dice and sum the result.",

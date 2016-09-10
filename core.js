@@ -1,9 +1,14 @@
 // import the discord.js module
 const Discord = require('discord.js');
-const Command = require('./command');
-const Utility = require('./utility');
-const Dice = require('./dice');
-const Songs = require('./songs');
+const Command = require('./command.js');
+
+//which submodules to load
+var modules = ['utility','dice','songs'];
+
+modules = modules.map(function(moduleName) {
+	moduleName = './modules/' + moduleName + '.js';
+	return require(moduleName);
+})
 
 // create an instance of a Discord Client, and call it bot
 const bot = new Discord.Client();
@@ -40,9 +45,10 @@ function loadCommands(module) {
 	Array.prototype.push.apply(commands,module.commands);
 }
 
-loadCommands(Utility);
-loadCommands(Dice);
-loadCommands(Songs);
+for (module of modules) {
+	loadCommands(module);
+	console.log("Loaded commands from module " + module.name);
+}
 
 
 bot.on('ready', () => {

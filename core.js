@@ -18,7 +18,7 @@ commands.push(new Command.Command(
 	'help',
 	'List known commands.',
 	function() {
-		commandList = "Known commands:\n"
+		commandList = "I know the following commands:\n"
 		commands.forEach(function(command) {
 			commandList += command.help;
 		})
@@ -27,7 +27,7 @@ commands.push(new Command.Command(
 
 commands.push(new Command.SilentCommand(
 	'quit',
-	'Make the bot log out on all servers.',
+	'Make me log out on all servers.',
 	function(a,message) {
 		message.channel.sendMessage("OK, goodbye everyone! <3");
 		console.log("Quitting by request of " + message.author.username);

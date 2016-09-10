@@ -6,7 +6,7 @@ var commands = [];
 
 commands.push(new Command.Command(
 	'nickname ',
-	"Change the bot's nickname in this server.",
+	"Change my nickname in this server.",
 	function(nickname,message) {
 		message.guild.member(bot.user).setNickname(nickname);
 		return "OK, I'm changing my nickname to " + nickname;

@@ -19,6 +19,10 @@ class Command {
 			this.respond(message,this.operation(args,message));
 		}
 	}
+
+	get help {
+		return "\t"+this.command+":"+"\t"+this.description+"\n";
+	}
 }
 
 //Command that posts in the whole channel without @'ing a particular user

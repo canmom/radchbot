@@ -38,7 +38,7 @@ commands.push(new Command.Command(
 	function() {
 		commandList = "Known commands:\n"
 		commands.forEach(function(command) {
-			commandList += "\t" + command.command + ":\t" + command.description + "\n";
+			commandList += command.help;
 		})
 		return commandList;
 	}))

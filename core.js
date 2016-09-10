@@ -37,7 +37,7 @@ commands.push(new Command.SilentCommand(
 
 //Load commands from modules
 function loadCommands(module) {
-	Array.prototype.push.apply(commands(module.commands))
+	Array.prototype.push.apply(commands,module.commands);
 }
 
 loadCommands(Utility);

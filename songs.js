@@ -2,28 +2,28 @@
 
 const Command = require('./command');
 
-class Song extends SayCommand {
+class Song extends Command.SayCommand {
 	constructor(command,title,verse,data) {
-		this.command = command;
-		this.description = title;
+		var operation;
 		if (typeof verse === 'function') {
-			this.operation = verse;
+			operation = verse;
 		}
 		else if (typeof verse === 'string') {
-			this.operation = function() {
+			operation = function() {
 				return verse;
 			}
 		}
+		super(command,title,operation)
 		this.data = data;
 	}
 
-	help() {
+	get help() {
 		//Don't let songs clutter up the command list
 		return "";
 	}
 
-	describe() {
-		return super.help();
+	get describe() {
+		return super.help;
 	}
 }
 
@@ -36,7 +36,7 @@ function addSong(command,title,verse,data) {
 addSong(
 	'egg',
 	'One Thousand Eggs',
-	() => {
+	function() {
 		verse = this.data.eggs.toString() + " eggs all nice and warm\n"+
 			"Crack, crack, crack a little chick is born\n"+
 			"Peep peep peep peep!\n"+
@@ -56,12 +56,12 @@ addSong(
 addSong(
 	'around',
 	'My mother said it all goes around',
-	() => {
+	function() {
 		verse = ("My mother said it all goes around,\n" +
-			"The " + this.data.list[this.data.index] + " goes round the " this.data.list[this.data.index+1] +"\n"+
+			"The " + this.data.list[this.data.index] + " goes round the " + this.data.list[this.data.index+1] +"\n"+
 			"It all goes around.")
 		this.data.index += 1;
-		if (this.data.index +1 === this.list.length) {
+		if (this.data.index +1 === this.data.list.length) {
 			this.data.index = 0;
 		}
 		return verse;
@@ -75,8 +75,8 @@ addSong(
 addSong(
 	'aunt',
 	'The Corpse Soldier',
-	() => {
-		verse = lines[index];
+	function() {
+		verse = this.data.lines[this.data.index];
 		this.data.index += 1;
 		if (this.data.Index >= this.data.lines.length) {this.data.index = 0;}
 		return verse;
@@ -89,7 +89,7 @@ addSong(
 
 addSong(
 	'fish',
-	'My Heart is a Fish',
+	'My heart is a fish',
 	"My heart is a fish\nHiding in the water-grass\nIn the green, in the green."
 );
 
@@ -128,6 +128,7 @@ addSong(
 
 addSong(
 	'loved',
+	"Who only loved once?",
 	"Who only loved once?\n"+
 		'Who ever said "I will never love once"\n'+
 		"And kept their word?"
@@ -136,7 +137,7 @@ addSong(
 addSong(
 	'god',
 	"Oh you, who live sheltered by God",
-	"Oh you, who livs sheltered by God,\nWho live all your lives in her shadow."
+	"Oh you, who live sheltered by God,\nWho live all your lives in her shadow."
 );
 
 addSong(
@@ -200,15 +201,17 @@ addSong(
 		"And fly away, desperate for freedom."
 );
 
-commands = Array(songs);
+commands = songs.slice(0);
 
 commands.push(new Command.Command('songs','List song commands.',
 	function() {
-		songs.forEach(function(song){
-			song.describe()
+		commandList = "I know the following songs:\n"
+		songs.forEach(function(command) {
+			commandList += command.describe;
 		})
-	}))
+		return commandList;
+	}));
 
 module.exports = {
-	commands: commands;
+	commands: commands
 }

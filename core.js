@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 const Command = require('./command');
 const Utility = require('./utility');
 const Dice = require('./dice');
-//const Songs = require('./songs');
+const Songs = require('./songs');
 
 // create an instance of a Discord Client, and call it bot
 const bot = new Discord.Client();
@@ -24,8 +24,13 @@ commands.push(new Command.Command(
 		return commandList;
 	}));
 
-Array.prototype.push.apply(commands,Utility.commands)
-Array.prototype.push.apply(commands,Dice.commands);
+function loadCommands(module) {
+	Array.prototype.push.apply(commands(module.commands))
+}
+
+loadCommands(Utility);
+loadCommands(Dice);
+loadCommands(Songs);
 
 
 bot.on('ready', () => {

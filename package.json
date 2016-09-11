@@ -4,7 +4,8 @@
   "description": "A simple Discord chat bot for the Radchdome community.",
   "main": "core.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node core.js"
   },
   "repository": {
     "type": "git",

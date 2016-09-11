@@ -10,10 +10,6 @@ class Character {
 		};
 		this.xp = 0;
 		this.level = 1;
-		this.race = null;
-		this.class = null;
-		this.background = null;
-		this.equipment = [];
 	}
 
 	modifier(attr) {

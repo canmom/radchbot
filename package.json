@@ -1,0 +1,23 @@
+{
+  "name": "radchbot",
+  "version": "0.1.0",
+  "description": "A simple Discord chat bot for the Radchdome community.",
+  "main": "core.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node core.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/canmom/radchbot.git"
+  },
+  "author": "canmom",
+  "license": "SEE LICENCE IN LICENCE",
+  "bugs": {
+    "url": "https://github.com/canmom/radchbot/issues"
+  },
+  "homepage": "https://github.com/canmom/radchbot#readme",
+  "dependencies": {
+    "discord.js": "^9.1.1"
+  }
+}

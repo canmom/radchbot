@@ -92,7 +92,7 @@ function processFullExpression(diceExpression) {
 }
 
 var respond = function(diceExpression,message) {
-	console.log("rolling " + diceExpression + " for " + message.author.username);
+	console.log(`rolling ${diceExpression} for ${message.author.username}`);
     
     var rolls = processFullExpression(diceExpression)
 
@@ -105,8 +105,7 @@ var respond = function(diceExpression,message) {
 
 	rolls.forEach(function(roll) {
 		reply += "\n   " + roll.expr + (roll.rolls.length !== 0 ? 
-			":\t" + roll.value.toString() + 
-			"\t(" + roll.rolls.toString() + ")" 
+			`:\t ${roll.value.toString()}\t(${roll.rolls.toString()})`
 			: "");
 	});
 

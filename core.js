@@ -1,55 +1,36 @@
-// import the discord.js module
-const Discord = require('discord.js');
 const Command = require('./command.js');
+
+//bot is in another file in order to allow it to be exposed to submodules
+const Bot = require('./bot.js')
 
 //Hide the token in a separate file, make sure it exposes 'token'!
 const Token = require('./token.js');
 
 //which submodules to load
-var modules = ['dice','songs'];
+var modules = ['utility','dice','songs'];
 
+//load submodules
 modules = modules.map(function(moduleName) {
 	moduleName = './modules/' + moduleName + '.js';
 	return require(moduleName);
 })
 
-// create an instance of a Discord Client, and call it bot
-const bot = new Discord.Client();
-
-
-
 commands = [];
 
-//Commands that require stuff inside this module
-commands.push(new Command.Command(
-	'help',
-	'List known commands.',
-	function() {
-		commandList = "I know the following commands:\n"
-		commands.forEach(function(command) {
-			commandList += command.help;
-		})
-		return commandList;
-	}));
-
-commands.push(new Command.SilentCommand(
-	'quit',
-	'Make me log out on all servers.',
-	function(a,message) {
-		message.channel.sendMessage("OK, goodbye everyone! <3");
-		console.log("Quitting by request of " + message.author.username);
-		bot.destroy();
-	})
-)
-
-commands.push(new Command.Command(
-	'nickname ',
-	"Change my nickname in this server.",
-	function(nickname,message) {
-		message.guild.member(bot.user).setNickname(nickname);
-		return "OK, I'm changing my nickname to " + nickname;
-	})
-)
+//global help command
+commands.push(
+	new Command.Command(
+		'help',
+		'List known commands.',
+		function() {
+			commandList = "I know the following commands:\n"
+			commands.forEach(function(command) {
+				commandList += command.help;
+			})
+			return commandList;
+		}
+	)
+);
 
 //Load commands from modules
 function loadCommands(module) {
@@ -61,17 +42,16 @@ for (module of modules) {
 	console.log("Loaded commands from module " + module.name);
 }
 
-
-bot.on('ready', () => {
+Bot.bot.on('ready', () => {
   console.log('I am ready!');
 });
 
 // create an event listener for messages
-bot.on('message', function(message) {
+Bot.bot.on('message', function(message) {
 	commands.forEach(function(command) {
 		command.check(message);
 	})
 });
 
 // log our bot in
-bot.login(Token.token);
+Bot.bot.login(Token.token);

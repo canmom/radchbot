@@ -12,11 +12,12 @@ class Menu {
 
 	testChoice(selection,message) {
 		if (this.options.has(selection)) {
+			message.reply(`OK, you've chosen ${selection}.`)
 			this.resultFunction(selection);
 			return true;
 		}
 		else {
-			message.reply(`I didn't recognise ${selection.toString()} as an available choice. Try again?`)
+			message.reply(`I didn't recognise ${selection} as an available choice. Try again?`)
 			return false;
 		}
 	}
@@ -36,8 +37,9 @@ choice = function(selection,message) {
 	}
 }
 
-newMenu = function(userid,channel,options,resultFunction) {
-	pending[userid] = new Menu(channel,options,resultFunction);
+newMenu = function(message,options,resultFunction) {
+	message.reply("please !choose one of the following options: " + options.toString());
+	pending[message.user.id] = new Menu(message.channel,options,resultFunction);
 }
 
 module.exports = {

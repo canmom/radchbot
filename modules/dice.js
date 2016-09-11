@@ -132,5 +132,6 @@ module.exports = {
 		new Command.Command("dicehelp",
 			"Explain the dice rolling syntax.",
 			dicehelp)
-	]
+	],
+	roll:processFullExpression
 };

@@ -6,7 +6,7 @@ const Command = require('./command.js');
 const Token = require('./token.js');
 
 //which submodules to load
-var modules = ['utility','dice','songs'];
+var modules = ['dice','songs'];
 
 modules = modules.map(function(moduleName) {
 	moduleName = './modules/' + moduleName + '.js';
@@ -20,7 +20,7 @@ const bot = new Discord.Client();
 
 commands = [];
 
-//The two absolutely vital commands
+//Commands that require stuff inside this module
 commands.push(new Command.Command(
 	'help',
 	'List known commands.',
@@ -39,6 +39,15 @@ commands.push(new Command.SilentCommand(
 		message.channel.sendMessage("OK, goodbye everyone! <3");
 		console.log("Quitting by request of " + message.author.username);
 		bot.destroy();
+	})
+)
+
+commands.push(new Command.Command(
+	'nickname ',
+	"Change my nickname in this server.",
+	function(nickname,message) {
+		message.guild.member(bot.user).setNickname(nickname);
+		return "OK, I'm changing my nickname to " + nickname;
 	})
 )
 

@@ -78,7 +78,7 @@ addSong(
 	function() {
 		verse = this.data.lines[this.data.index];
 		this.data.index += 1;
-		if (this.data.Index >= this.data.lines.length) {this.data.index = 0;}
+		if (this.data.index >= this.data.lines.length) {this.data.index = 0;}
 		return verse;
 	},
 	{

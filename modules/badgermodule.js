@@ -24,6 +24,6 @@ commands.push(
 )
 
 module.exports = {
-	name: "[Responder]",
+	name: "Responder",
 	commands: commands
 };

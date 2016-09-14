@@ -7,7 +7,7 @@ const Bot = require('./bot.js')
 const Token = require('./token.js');
 
 //which submodules to load
-var modules = ['utility','dice','songs','badgermodule','grim'];
+var modules = ['utility','dice','songs','badgermodule'];
 
 //load submodules
 modules = modules.map(function(moduleName) {

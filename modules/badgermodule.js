@@ -23,7 +23,27 @@ commands.push(
 	)
 )
 
+commands.push(
+	new Command.Command(
+		"grim",
+		"Says what Grim is.",
+		function(arguments,message) {
+			return "Grim is wrong."
+		}
+	)
+)
+
+commands.push(
+	new Command.Command(
+		"hello",
+		"Greetings!",
+		function(arguments,message) {
+			return "hello!"
+		}
+	)
+)
+
 module.exports = {
-	name: "Responder",
+	name: "Statements",
 	commands: commands
 };

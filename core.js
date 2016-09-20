@@ -15,26 +15,9 @@ modules = modules.map(function(moduleName) {
 	return require(moduleName);
 })
 
-commands = [];
-
-//global help command
-commands.push(
-	new Command.Command(
-		'help',
-		'List known commands.',
-		function() {
-			commandList = "I know the following commands:\n"
-			commands.forEach(function(command) {
-				commandList += command.help;
-			})
-			return commandList;
-		}
-	)
-);
-
 //Load commands from modules
 function loadCommands(module) {
-	Array.prototype.push.apply(commands,module.commands);
+	Array.prototype.push.apply(Bot.commands,module.commands);
 }
 
 for (module of modules) {
@@ -48,7 +31,7 @@ Bot.bot.on('ready', () => {
 
 // create an event listener for messages
 Bot.bot.on('message', function(message) {
-	commands.forEach(function(command) {
+	Bot.commands.forEach(function(command) {
 		command.check(message);
 	})
 });

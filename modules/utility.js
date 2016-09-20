@@ -24,6 +24,21 @@ commands.push(new Command.Command(
 	})
 )
 
+//global help command
+commands.push(
+	new Command.Command(
+		'help',
+		'List known commands.',
+		function() {
+			commandList = "I know the following commands:\n"
+			Bot.commands.forEach(function(command) {
+				commandList += command.help;
+			})
+			return commandList;
+		}
+	)
+);
+
 module.exports = {
 	name: "Utility",
 	commands: commands

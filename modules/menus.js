@@ -1,25 +1,29 @@
 //A simple way to request choices from a list from specific users
 
 const Command = require('../command.js');
-const Bot = require('../bot.js');
 
 class Menu {
-	constructor(channel,options,resultFunction) {
+	constructor(channel,options,resolve,reject) {
 		this.channel = channel;
 		this.options = Set([...options]);
-		this.resultFunction = resultFunction;
+		this.resolove = resolve;
+		this.reject = reject;
 	}
 
 	testChoice(selection,message) {
 		if (this.options.has(selection)) {
 			message.reply(`OK, you've chosen ${selection}.`)
-			this.resultFunction(selection);
+			this.resolve(selection);
 			return true;
 		}
 		else {
 			message.reply(`I didn't recognise ${selection} as an available choice. Try again?`)
 			return false;
 		}
+	}
+
+	abort() {
+		this.reject();
 	}
 }
 
@@ -37,9 +41,16 @@ choice = function(selection,message) {
 	}
 }
 
-newMenu = function(message,options,resultFunction) {
-	message.reply("please !choose one of the following options: " + options.toString());
-	pending[message.user.id] = new Menu(message.channel,options,resultFunction);
+//create a Promise that will resolve when the specified user presents a valid choice
+newMenu = function(message,options) {
+	return new Promise(function(resolve,reject) {
+		message.reply("please !choose one of the following options: " + options.toString());
+		if (pending[message.user.id]) {
+			pending[message.user.id].abort();
+		}
+		pending[message.user.id] = new Menu(message.channel,options,resolve,reject);
+
+	})
 }
 
 module.exports = {

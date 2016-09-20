@@ -6,13 +6,12 @@ const Bot = require('./bot.js')
 //Hide the token in a separate file, make sure it exposes 'token'!
 const Token = require('./token.js');
 
-//which submodules to load
-var modules = require("./modules.js").modules;
+//load modules from modules folder
+var ignore = new Set(['template.js']); //modules not to load
 
-//load submodules
-modules = modules.map(function(moduleName) {
-	moduleName = './modules/' + moduleName + '.js';
-	return require(moduleName);
+var modules = require('fs').readdirSync('./modules').map(function(moduleName) {
+	if (ignore.has(moduleName)) {return "skipped"}
+	return require('./modules/'+moduleName);
 })
 
 //Load commands from modules
@@ -21,8 +20,10 @@ function loadCommands(module) {
 }
 
 for (module of modules) {
-	loadCommands(module);
-	console.log("Loaded commands from module " + module.name);
+	if (module !== "skipped") {
+		loadCommands(module);
+		console.log("Loaded commands from module " + module.name);
+	}
 }
 
 Bot.bot.on('ready', () => {

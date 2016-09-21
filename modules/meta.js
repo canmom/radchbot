@@ -107,7 +107,7 @@ function deleteCommand(args) {
 
 commands.push(
 	new Command.Command(
-		"repeat ",
+		"repeat",
 		"Repeat a command multiple times. Syntax: '!repeat <number> <command> <arguments>' e.g. '!repeat 6 roll 4d6b3'",
 		repeat
 	)
@@ -115,7 +115,7 @@ commands.push(
 
 commands.push(
 	new Command.Command(
-		"newcommand ",
+		"newcommand",
 		"Add a simple, temporary command that returns a message when called. Syntax: !addcommand <command> <message>. Does not persist through bot shutdown!",
 		addCommand
 	)
@@ -123,7 +123,7 @@ commands.push(
 
 commands.push(
 	new Command.Command(
-		"deletecommand ",
+		"deletecommand",
 		"Remove a command. Syntax: !deletecommand <command>. Does not persist through bot shutdown. Still, be careful!",
 		deleteCommand
 	)

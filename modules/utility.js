@@ -16,7 +16,7 @@ commands.push(new Command.SilentCommand(
 )
 
 commands.push(new Command.Command(
-	'nickname ',
+	'nickname',
 	"Change my nickname in this server.",
 	function(nickname,message) {
 		message.guild.member(Bot.bot.user).setNickname(nickname);

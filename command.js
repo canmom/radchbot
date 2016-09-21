@@ -13,7 +13,7 @@ class Command {
 
 	check(message) {
 		if ((message.content+" ").startsWith('!'+this.command + " ")) {
-			var args = message.content.slice(1+this.command.length);
+			var args = message.content.slice(2+this.command.length);
 			this.respond(message,this.operation(args,message));
 		}
 	}

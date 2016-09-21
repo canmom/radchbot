@@ -44,10 +44,15 @@ function addCommand(args,message) {
 	var commandAlreadyExists = false;
 
 	for (command of Bot.commands) {
-		if (command.command.startsWith(newCommand)) {
-			commandAlreadyExists = true;
+		var commandCall = command.command;
+		if (commandCall.endsWith(' ')) {
+			commandCall = commandCall.slice(0,-1);
 		}
-	};
+		if (commandCall === newCommand) {
+			commandAlreadyExists = true;
+			break;
+		}
+	}
 
 	if (commandAlreadyExists) {
 		return "Sorry, but there's already a command by that name! Try calling it something else.";
@@ -56,7 +61,7 @@ function addCommand(args,message) {
 		Bot.commands.push(
 			new Command.Command(
 				newCommand,
-				"Temporary command added by " + message.guild.member(message.author),
+				"Temporary command added by " + message.author,
 				function () {
 					return newCommandMessage;
 				}
@@ -77,7 +82,11 @@ function deleteCommand(args) {
 	else {
 		var ind = null;
 		Bot.commands.forEach(function(command,commandInd) {
-			if (command.command.startsWith(commandToDelete)) {
+			commandCall = command.command;
+			if (commandCall.endsWith(' ')) {
+				commandCall = commandCall.slice(0,-1);
+			}
+			if (commandToDelete === commandCall) {
 				ind = commandInd;
 			}
 		})

@@ -63,7 +63,32 @@ function addCommand(args,message) {
 			)
 		);
 
-		return "OK, when someone says !" + newCommand + ", I will say '" + newCommandMessage + "'!";
+		return `OK, when someone says !${newCommand}, I will say '${newCommandMessage}'!`;
+	}
+}
+
+function deleteCommand(args) {
+	var protectedCommands = ['help','quit'];
+
+	var commandToDelete = args.split(' ',1);
+	if (protectedCommands.includes(commandToDelete)) {
+		return `Sorry, I can't delete ${commandToDelete} as it is a protected command.`
+	}
+	else {
+		var ind = null;
+		Bot.commands.forEach(function(command,commandInd) {
+			if (command.command.startsWith(commandToDelete)) {
+				ind = commandInd;
+			}
+		})
+
+		if (ind === null) {
+			return `Sorry, ${commandToDelete} does not seem to exist, so I can't delete it!`
+		}
+		else {
+			Bot.commands.splice(ind,1);
+			return `I've forgotten the command ${commandToDelete}. Hope it wasn't important!`
+		}
 	}
 }
 
@@ -80,6 +105,14 @@ commands.push(
 		"newcommand ",
 		"Add a simple, temporary command that returns a message when called. Syntax: !addcommand <command> <message>. Does not persist through bot shutdown!",
 		addCommand
+	)
+)
+
+commands.push(
+	new Command.Command(
+		"deletecommand ",
+		"Remove a command. Syntax: !deletecommand <command>. Does not persist through bot shutdown. Still, be careful!",
+		deleteCommand
 	)
 )
 

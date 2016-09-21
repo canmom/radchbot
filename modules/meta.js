@@ -32,9 +32,13 @@ function repeat(args,message) {
 			reply += ">" + repeatedInstruction + "\n";
 			reply += repeatedCommand.operation(repeatedCommandArgs,message) + "\n";
 		}
+		return reply;
+	}
+	else {
+		return `I'm sorry, I don't recognise the command ${repeatedInstruction}, so I can't repeat it!`;
 	}
 
-	return reply;
+	
 }
 
 function addCommand(args,message) {
@@ -55,7 +59,7 @@ function addCommand(args,message) {
 	}
 
 	if (commandAlreadyExists) {
-		return "Sorry, but there's already a command by that name! Try calling it something else.";
+		return `Sorry, but there's already a command called ${newCommand}! Try calling it something else.`;
 	}
 	else {
 		Bot.commands.push(
@@ -96,7 +100,7 @@ function deleteCommand(args) {
 		}
 		else {
 			Bot.commands.splice(ind,1);
-			return `I've forgotten the command ${commandToDelete}. Hope it wasn't important!`
+			return `OK, I've forgotten the command ${commandToDelete}. Hope it wasn't important!`
 		}
 	}
 }

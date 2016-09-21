@@ -38,7 +38,7 @@ function repeat(args,message) {
 }
 
 function addCommand(args,message) {
-	var newCommand = args.split(' ',1);
+	var newCommand = args.split(' ',1)[0];
 	var newCommandMessage = args.slice(args.indexOf(' ')+1);
 
 	var commandAlreadyExists = false;
@@ -75,7 +75,7 @@ function addCommand(args,message) {
 function deleteCommand(args) {
 	var protectedCommands = ['help','quit'];
 
-	var commandToDelete = args.split(' ',1);
+	var commandToDelete = args.split(' ',1)[0];
 	if (protectedCommands.includes(commandToDelete)) {
 		return `Sorry, I can't delete ${commandToDelete} as it is a protected command.`
 	}

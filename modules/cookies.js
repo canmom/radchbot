@@ -35,8 +35,8 @@ module.exports = {
             giveCookies
         ),
         new Command.Command(
-        	"checkcookie",
-        	"Checks your cookies.",
+        	"checkcookies",
+        	"Check how many cookies you have.",
         	checkCookies
         ),
     ]

@@ -12,7 +12,7 @@ class Menu {
 
 	testChoice(selection,message) {
 		if (this.options.has(selection)) {
-			message.reply(`OK, you've chosen ${selection}.`)
+			//message.reply(`OK, you've chosen ${selection}.`)
 			this.resolve(selection);
 			return true;
 		}

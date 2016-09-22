@@ -5,8 +5,8 @@ const Command = require('../command.js');
 class Menu {
 	constructor(channel,options,resolve,reject) {
 		this.channel = channel;
-		this.options = Set([...options]);
-		this.resolove = resolve;
+		this.options = new Set([...options]);
+		this.resolve = resolve;
 		this.reject = reject;
 	}
 
@@ -32,8 +32,8 @@ var pending = {};
 choice = function(selection,message) {
 	for (userid in pending) {
 		menu = pending[userid]; 
-		if (message.user.id === userid && message.channel === menu.channel) {
-			if(menu.testChoice(selection)) {
+		if (message.author.id === userid && message.channel === menu.channel) {
+			if(menu.testChoice(selection,message)) {
 				delete pending[userid];
 			}
 			break;
@@ -45,15 +45,16 @@ choice = function(selection,message) {
 newMenu = function(message,options) {
 	return new Promise(function(resolve,reject) {
 		message.reply("please !choose one of the following options: " + options.toString());
-		if (pending[message.user.id]) {
-			pending[message.user.id].abort();
+		if (pending[message.author.id]) {
+			pending[message.author.id].abort();
 		}
-		pending[message.user.id] = new Menu(message.channel,options,resolve,reject);
+		pending[message.author.id] = new Menu(message.channel,options,resolve,reject);
 
 	})
 }
 
 module.exports = {
-	commands: [new Command.Command("choose ","Pick an item on a menu.",choice)],
+	name: "Menus",
+	commands: [new Command.SilentCommand("choose","Pick an item on a menu that has been presented to you.",choice)],
 	present: newMenu
 }

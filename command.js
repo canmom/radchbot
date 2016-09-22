@@ -42,8 +42,8 @@ class Trigger extends SayCommand {
 //Command that does not automatically print reply (useful for e.g. quit command)
 class SilentCommand extends Command {
 	check(message) {
-		if (message.content.startsWith('!'+this.command)) {
-			var args = message.content.slice(1+this.command.length);
+		if ((message.content+" ").startsWith('!'+this.command + " ")) {
+			var args = message.content.slice(2+this.command.length);
 			this.operation(args,message);
 		}
 	}

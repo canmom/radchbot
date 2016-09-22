@@ -16,13 +16,28 @@ commands.push(new Command.SilentCommand(
 )
 
 commands.push(new Command.Command(
-	'nickname ',
+	'nickname',
 	"Change my nickname in this server.",
 	function(nickname,message) {
 		message.guild.member(Bot.bot.user).setNickname(nickname);
 		return "OK, I'm changing my nickname to " + nickname;
 	})
 )
+
+//global help command
+commands.push(
+	new Command.Command(
+		'help',
+		'List known commands.',
+		function() {
+			commandList = "I know the following commands:\n"
+			Bot.commands.forEach(function(command) {
+				commandList += command.help;
+			})
+			return commandList;
+		}
+	)
+);
 
 module.exports = {
 	name: "Utility",

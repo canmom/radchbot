@@ -12,8 +12,8 @@ class Command {
 	}
 
 	check(message) {
-		if (message.content.indexOf('!'+this.command) === 0) {
-			var args = message.content.slice(1+this.command.length);
+		if ((message.content+" ").startsWith('!'+this.command + " ")) {
+			var args = message.content.slice(2+this.command.length);
 			this.respond(message,this.operation(args,message));
 		}
 	}
@@ -33,7 +33,7 @@ class SayCommand extends Command {
 //Command triggered by a substring anywhere in a message
 class Trigger extends SayCommand {
 	check(message) {
-		if (message.content.indexOf('command') !== -1) {
+		if (message.content.includes('command')) {
 			this.respond(message,this.operation());
 		}
 	}
@@ -42,7 +42,7 @@ class Trigger extends SayCommand {
 //Command that does not automatically print reply (useful for e.g. quit command)
 class SilentCommand extends Command {
 	check(message) {
-		if (message.content.indexOf('!'+this.command) === 0) {
+		if (message.content.startsWith('!'+this.command)) {
 			var args = message.content.slice(1+this.command.length);
 			this.operation(args,message);
 		}

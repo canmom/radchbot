@@ -17,7 +17,7 @@ class Menu {
 			return true;
 		}
 		else {
-			message.reply(`I didn't recognise ${selection} as an available choice. Try again?`)
+			message.reply(`I didn't recognise **${selection}** as an available choice. Try again?`)
 			return false;
 		}
 	}
@@ -44,7 +44,7 @@ choice = function(selection,message) {
 //create a Promise that will resolve when the specified user presents a valid choice
 newMenu = function(message,options) {
 	return new Promise(function(resolve,reject) {
-		message.reply("please !choose one of the following options: " + options.toString());
+		message.reply(`please !choose one of the following options: **${options.join("**, **")}**`);
 		if (pending[message.author.id]) {
 			pending[message.author.id].abort();
 		}

@@ -27,14 +27,14 @@ class Menu {
 	}
 }
 
-var pending = {};
+var pending = new Map();
 
 choice = function(selection,message) {
-	for (userid in pending) {
-		menu = pending[userid]; 
-		if (message.author.id === userid && message.channel === menu.channel) {
+	for (user of pending.keys()) {
+		menu = pending.get(user); 
+		if (message.author === user && message.channel === menu.channel) {
 			if(menu.testChoice(selection,message)) {
-				delete pending[userid];
+				pending.delete(user);
 			}
 			break;
 		}
@@ -45,10 +45,10 @@ choice = function(selection,message) {
 newMenu = function(message,options) {
 	return new Promise(function(resolve,reject) {
 		message.reply(`please !choose one of the following options: **${options.join("**, **")}**`);
-		if (pending[message.author.id]) {
-			pending[message.author.id].abort();
+		if (pending.has(message.author)) {
+			pending.get(message.author).abort();
 		}
-		pending[message.author.id] = new Menu(message.channel,options,resolve,reject);
+		pending.set(message.author, new Menu(message.channel,options,resolve,reject));
 
 	})
 }

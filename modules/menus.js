@@ -22,6 +22,10 @@ class Menu {
 		}
 	}
 
+	get optionsList() {
+		return `**${[...this.options].join("**, **")}**`
+	}
+
 	abort() {
 		this.reject();
 	}
@@ -29,7 +33,7 @@ class Menu {
 
 var pending = new Map();
 
-choice = function(selection,message) {
+var choice = function(selection,message) {
 	for (user of pending.keys()) {
 		menu = pending.get(user); 
 		if (message.author === user && message.channel === menu.channel) {
@@ -42,7 +46,7 @@ choice = function(selection,message) {
 }
 
 //create a Promise that will resolve when the specified user presents a valid choice
-newMenu = function(message,options) {
+var newMenu = function(message,options) {
 	return new Promise(function(resolve,reject) {
 		message.reply(`please !choose one of the following options: **${options.join("**, **")}**`);
 		if (pending.has(message.author)) {
@@ -53,8 +57,25 @@ newMenu = function(message,options) {
 	})
 }
 
+var checkPending = function() {
+	var reply;
+	if (pending.size !== 0) {
+		reply = "I'm waiting for answers for the following..."
+		pending.forEach(function(menu,user) {
+			reply += `\n${user} needs to !choose between ${menu.optionsList} in channel ${menu.channel}!`
+		})
+	}
+	else {
+		reply = "I've got all the answers I need for now."
+	}
+	return reply;
+}
+
 module.exports = {
 	name: "Menus",
-	commands: [new Command.SilentCommand("choose","Pick an item on a menu that has been presented to you.",choice)],
+	commands: [
+		new Command.SilentCommand("choose","Pick an item on a menu that has been presented to you.",choice),
+		new Command.SayCommand("pending","List currently open menu questions.",checkPending)
+		],
 	present: newMenu
 }

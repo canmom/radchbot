@@ -6,40 +6,24 @@ const Bot = require('./bot.js')
 //Hide the token in a separate file, make sure it exposes 'token'!
 const Token = require('./token.js');
 
-//which submodules to load
-var modules = ['utility','dice','songs'];
+//load modules from modules folder
+var ignore = new Set(['template.js']); //modules not to load
 
-//load submodules
-modules = modules.map(function(moduleName) {
-	moduleName = './modules/' + moduleName + '.js';
-	return require(moduleName);
+var modules = require('fs').readdirSync('./modules').map(function(moduleName) {
+	if (ignore.has(moduleName)) {return "skipped"}
+	return require('./modules/'+moduleName);
 })
-
-commands = [];
-
-//global help command
-commands.push(
-	new Command.Command(
-		'help',
-		'List known commands.',
-		function() {
-			commandList = "I know the following commands:\n"
-			commands.forEach(function(command) {
-				commandList += command.help;
-			})
-			return commandList;
-		}
-	)
-);
 
 //Load commands from modules
 function loadCommands(module) {
-	Array.prototype.push.apply(commands,module.commands);
+	Array.prototype.push.apply(Bot.commands,module.commands);
 }
 
 for (module of modules) {
-	loadCommands(module);
-	console.log("Loaded commands from module " + module.name);
+	if (module !== "skipped") {
+		loadCommands(module);
+		console.log("Loaded commands from module " + module.name);
+	}
 }
 
 Bot.bot.on('ready', () => {
@@ -48,7 +32,7 @@ Bot.bot.on('ready', () => {
 
 // create an event listener for messages
 Bot.bot.on('message', function(message) {
-	commands.forEach(function(command) {
+	Bot.commands.forEach(function(command) {
 		command.check(message);
 	})
 });

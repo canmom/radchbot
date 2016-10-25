@@ -87,7 +87,12 @@ function processFullExpression(diceExpression) {
 
 	var diceGroups = diceExpression.match(/[\+\-]\d+d?\d*[bw]?\d*/g);
 	
-	return diceGroups.map(processDiceGroup);
+	if (diceGroups) {
+		return diceGroups.map(processDiceGroup);
+	}
+	else {
+		return [];
+	}
 
 }
 

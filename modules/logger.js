@@ -7,7 +7,7 @@ const commands = [];
 const activeLogs = [];
 
 function formatFilename(filename) {
-  return 'logs/' + filename + (filename.endsWith('.md') ? '' : '.md');
+  return 'logs/' + filename + (filename.endsWith('.html') ? '' : '.html');
 }
 
 class Log {
@@ -15,6 +15,11 @@ class Log {
     this.channel = channel;
     this.startTime = new Date()
     this.filename = formatFilename(filename);
+    this.groupOwner = null;
+    this.inList = false;
+    this.personString = null;
+    this.users = new Map();
+    this.knownUsers = 0;
     this.logger = new (winston.Logger)({
       transports: [
         new (winston.transports.File)({
@@ -28,18 +33,72 @@ class Log {
 
     this.log = (message) => {
       if (message.channel === this.channel) {
-        if (message.content.startsWith(">")) {
-          this.logger.log('info',`\n${message.content}\n`);
-        } else {
-          this.logger.log('info',`- ${message.author.username}: ${message.content}`)
-        }
+        this.logMessage(message);
       }
     }
 
     Bot.bot.on('message', this.log);
   }
 
+  beginList() {
+    this.logger.log('info','<ul class="chat">')
+    this.inList = true;
+  }
+
+  endList() {
+    this.inList = false;
+    this.logger.log('info','</ul>')
+  }
+
+  beginGroup(message) {
+    if (!this.users.has(message.author)) {
+      this.knownUsers += 1;
+      this.users.set(message.author,`person${this.knownUsers}`);
+    }
+    this.groupOwner = message.author;
+    this.personString = this.users.get(message.author);
+    this.logger.log('info',`  <li class=${this.personString}>`);
+  }
+
+  endGroup() {
+    this.groupOwner = null;
+    this.personString = null;
+    this.logger.log('info',"  </li>")
+  }
+
+  logQuote(message) {
+    if (this.groupOwner) {
+      this.endGroup();
+      this.endList();
+    }
+    this.logger.log('info',`\n<blockquote>${message.content.slice(2)}</blockquote>\n`);
+  }
+
+  logMessage(message) {
+    if (message.content.startsWith(">")) {
+      this.logQuote(message);
+    } else if (message.content.startsWith("#") || message.content.startsWith("!") || message.author.username === "radchdome-diceroller") {
+      null;
+    } else {
+      if (message.author !== this.groupOwner) {
+        if (this.inList) {
+          this.endGroup();
+        } else {
+          this.beginList();
+        }
+        this.beginGroup(message);
+        this.logger.log('info',`    <p><strong class="name">${message.author.username}:</strong> ${message.content}</p>`)
+      } else {
+        this.logger.log('info',`    <p>${message.content}</p>`)
+      }
+    }
+  }
+
   shutdown() {
+    if (this.groupOwner) {
+      this.endGroup();
+      this.endList();
+    }
     Bot.bot.removeListener('message',this.log);
     this.logger.close();
   }
@@ -66,22 +125,31 @@ commands.push(
     "endlog",
     "End logging to a given file.",
     (filename,message) => {
-      filename = formatFilename(filename);
-      let exists = false;
-      let index = activeLogs.length - 1;
-      while (index >= 0) {
-        let log = activeLogs[index];
-        if (log.filename == filename) {
-          log.shutdown();
-          exists = true;
-          activeLogs.splice(index, 1);
+      if (filename) {
+        filename = formatFilename(filename);
+        let exists = false;
+        let index = activeLogs.length - 1;
+        while (index >= 0) {
+          let log = activeLogs[index];
+          if (log.filename == filename) {
+            log.shutdown();
+            exists = true;
+            activeLogs.splice(index, 1);
+          }
+          index -= 1;
         }
-        index -= 1;
+        if (exists) {
+          return `stopped logging in file ${filename}`
+        } else {
+          return `could not find file ${filename}`
+        }
       }
-      if (exists) {
-        return `stopped logging in file ${filename}`
-      } else {
-        return `could not find file ${filename}`
+      else {
+        activeLogs.forEach((log) => {
+          log.shutdown();
+        });
+        activeLogs.length = 0;
+        return "Closed all logs."
       }
     }
   )

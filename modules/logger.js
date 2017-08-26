@@ -123,7 +123,7 @@ commands.push(
 commands.push(
   new Command.Command(
     "endlog",
-    "End logging to a given file.",
+    "End logging in all files (no argument) or to a given file.",
     (filename,message) => {
       if (filename) {
         filename = formatFilename(filename);
